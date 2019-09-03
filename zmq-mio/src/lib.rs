@@ -132,7 +132,7 @@ impl Context {
 
     /// Create a new `Socket` instance for asynchronous communications.
     pub fn socket(&self, typ: zmq::SocketType) -> io::Result<Socket> {
-        Ok(Socket::new(try!(self.inner.socket(typ))))
+        Ok(Socket::new(self.inner.socket(typ)?))
     }
 
     /// Try to destroy the underlying context. This is different than the destructor;
@@ -168,7 +168,7 @@ impl Socket {
 
     /// Returns an `io::Result` with the raw socket file-descriptor.
     pub fn as_raw_fd(&self) -> io::Result<RawFd> {
-        let fd = try!(self.inner.get_fd());
+        let fd = self.inner.get_fd()?;
         trace!("socket raw FD: {}", fd);
         Ok(fd)
     }
@@ -370,7 +370,7 @@ impl mio::Evented for Socket {
         interest: Ready,
         opts: PollOpt,
     ) -> io::Result<()> {
-        let fd = try!(self.as_raw_fd());
+        let fd = self.as_raw_fd()?;
         trace!("ZmqSocket::register: fd={}", fd);
         EventedFd(&fd).register(poll, token, interest, opts)
     }

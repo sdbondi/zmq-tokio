@@ -183,16 +183,6 @@
 //!     ::std::process::exit(0);
 //! }
 //! ```
-extern crate futures;
-extern crate futures_cpupool;
-#[macro_use]
-extern crate log;
-extern crate mio;
-extern crate tokio_core;
-extern crate tokio_io;
-extern crate zmq;
-extern crate zmq_mio;
-
 pub mod future;
 
 use std::io;
